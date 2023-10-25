@@ -42,6 +42,8 @@ public final class HttpNamingServerObjectResolver implements ObjectResolver {
         uriStringBuilder.append(exchange.getRequestScheme()).append("://")
                 .append(localAddress.getHostName()).append(":").append(localAddress.getPort())
                 .append("/wildfly-services");
+
+        System.out.println("HELLOTOM: " + uriStringBuilder.toString());
         return new URIAffinity(new URI(uriStringBuilder.toString()));
     }
 
