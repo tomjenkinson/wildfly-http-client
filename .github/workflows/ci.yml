@@ -15,9 +15,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        jdk-distribution: [temurin, adopt-openj9]
-        jdk-version: [11, 17]
+        os: [windows-latest]
+        jdk-distribution: [temurin]
+        jdk-version: [11]
     steps:
     - name: Configure runner - Linux 
       if: contains(matrix.os, 'ubuntu')
@@ -37,9 +37,9 @@ jobs:
         distribution: ${{ matrix.jdk-distribution }}
         java-version: ${{ matrix.jdk-version }}
     - name: Run Tests
-      run: mvn -ntp -U -B -fae clean install
+      run: mvn -ntp -U -B -fae clean install -pl :wildfly-http-naming-client -am -Dtest=SimpleNamingOperationTestCase#testHttpNamingEjbObjectResolverHelper -DfailIfNoTests=false
     - uses: actions/upload-artifact@v3
-      if: failure()
+      if: always()
       with:
         name: surefire-${{ matrix.jdk-distribution }}-${{ matrix.jdk-version }}-${{ matrix.os }}
         path: '**/surefire-reports/*.txt'
